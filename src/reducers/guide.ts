@@ -1,10 +1,12 @@
 import { ReduxAction, SET_SELECTED_GUIDE_ID, SET_SELECTED_GUIDE_IMAGE_SRC } from '../actions/actionTypes'
 
 export interface GuideState {
+    placeId: null | string;
     selectedGuideId: null | string;
     selectedGuideImageSrc: null | string;
 }
-const initialState : GuideState= {
+const initialState: GuideState = {
+    placeId : null,
     selectedGuideId: null,
     selectedGuideImageSrc : null
 }
