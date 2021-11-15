@@ -18,7 +18,7 @@ const Guide = ({ imageSrc, imageAlt, title }: GuideProps) => {
         const imageFileId = imageFileName.split(".jpg")[0];
         dispatch(setSelectedGuideId(imageFileId));
         dispatch(setSelectedGuideImageSrc(imageSrc));
-        navigate(`/guides/${imageFileId}`);
+        navigate(`./${imageFileId}`);
     }}>
         <img alt={imageAlt} src={imageSrc} className={`guide-thumbnail`}></img>
         <h3>{title}</h3>

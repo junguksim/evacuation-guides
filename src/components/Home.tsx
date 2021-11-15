@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const Home = () => {
     return <>
         <h1>안녕하세요!!</h1>
-        <Link to={'/guides'}>롯데백화점 피난안내도</Link>
+        <Link to={'1/guides'}>롯데백화점 피난안내도</Link>
     </>
 }
 
