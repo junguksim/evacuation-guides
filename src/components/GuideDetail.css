@@ -4,3 +4,13 @@
     align-items: center;
     height: 100vh;
 }
+
+@media only screen and (max-width : 600px) {
+    .guide-detail-wrapper {
+        display: flex;
+    }
+
+    .guide-detail-image {
+        overflow-x: scroll;
+    }
+}

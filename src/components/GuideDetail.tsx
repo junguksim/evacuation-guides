@@ -7,7 +7,7 @@ const GuideDetail = () => {
     const selectedGuideImageSrc = useSelector((state: RootState) => state.guide.selectedGuideImageSrc)
 
     return <div className={`guide-detail-wrapper`}>
-        <img src={selectedGuideImageSrc as string} alt={``} ></img>
+        <img className={`guide-detail-image`} src={selectedGuideImageSrc as string} alt={``} ></img>
     </div>
 }
 
