@@ -8,7 +8,7 @@ import GuideListFloatButton from './GuideListFloatButton';
 
 const GuideList = () => {
     return <div className={`guide-list`}>
-        <GuideListFloatButton />
+        {/* <GuideListFloatButton /> */}
         {lotteEvacuationGuides.map((evacuationGuide) => {
             return <Guide {...evacuationGuide}/>
         })}
