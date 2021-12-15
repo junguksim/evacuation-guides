@@ -18,10 +18,10 @@ const GuideDetail = () => {
             <img className={`emergency-information-image`} src={process.env.PUBLIC_URL +`/emergency_information.png`} alt={``} ></img>
         </div>
         <div className='so-so-sim'>
-            <img src={process.env.PUBLIC_URL + `/cpr.png`} alt={``} />
             <img src={process.env.PUBLIC_URL + `/extinguisher.png`} alt={``} />
             <img src={process.env.PUBLIC_URL + `/fireplug.png`} alt={``} />
-            <h2>포항북부소방서와 롯데백화점 포항점은 함께 합니다.</h2>
+            <img src={process.env.PUBLIC_URL + `/cpr.png`} alt={``} />
+            <h3>포항북부소방서와 롯데백화점 포항점은 함께 합니다.</h3>
         </div>
     </div>
 }
