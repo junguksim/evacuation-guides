@@ -1,5 +1,4 @@
 import React from 'react';
-import { lotteEvacuationGuides } from '../lotteEvacuationGuides';
 
 const AWS = require('aws-sdk')
 
@@ -31,14 +30,7 @@ const GuideListFloatButton = () => {
         link.click();
     }
     
-    const onClick = async () => {
-        for (const {imageSrc, title} of lotteEvacuationGuides) {
-            const blob = await downloadImage(imageSrc);
-            await actualDownload(blob, title);
-        }
-    }
-
-    return <div className={`guide-list-float-button`} onClick={onClick}>
+    return <div className={`guide-list-float-button`}>
         <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 20 20">
         <title>
         download

@@ -13,6 +13,7 @@
     "@types/react-dom": "^17.0.11",
     "@types/react-redux": "^7.1.20",
     "aws-sdk": "^2.1033.0",
+    "firebase": "^9.6.1",
     "gh-pages": "^3.2.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -21,6 +22,7 @@
     "react-scripts": "4.0.3",
     "redux": "^4.1.2",
     "redux-thunk": "^2.4.0",
+    "styled-components": "^5.3.3",
     "typescript": "^4.4.4",
     "web-vitals": "^1.1.2"
   },
@@ -49,5 +51,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/styled-components": "^5.1.19"
   }
 }

@@ -1,10 +1,11 @@
 import { Dispatch } from 'redux'
-import { ReduxAction, SET_SELECTED_GUIDE_ID, SET_SELECTED_GUIDE_IMAGE_SRC } from './actionTypes'
+import { GuideInfo } from '../reducers/guide'
+import { ReduxAction, SET_GUIDES, SET_SELECTED_GUIDE_NAME, SET_SELECTED_GUIDE_IMAGE_SRC } from './actionTypes'
 
-export const setSelectedGuideId = (guideId: string) => (dispatch : Dispatch<ReduxAction>) => {
+export const setSelectedGuideName = (guideName: string) => (dispatch : Dispatch<ReduxAction>) => {
     dispatch({
-        type: SET_SELECTED_GUIDE_ID,
-        payload : guideId
+        type: SET_SELECTED_GUIDE_NAME,
+        payload : guideName
     })
 }
 
@@ -12,5 +13,12 @@ export const setSelectedGuideImageSrc = (guideImageSrc: string) => (dispatch : D
     dispatch({
         type: SET_SELECTED_GUIDE_IMAGE_SRC,
         payload : guideImageSrc
+    })
+}
+
+export const setGuides = (guides : GuideInfo[]) =>  (dispatch : Dispatch<ReduxAction>) => {
+    dispatch({
+        type: SET_GUIDES,
+        payload : guides
     })
 }
