@@ -12,39 +12,40 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
-export const downloadGuideImageByFloor = async (floor) => {
-  const storage = firebase.storage();
-  const pathReference = storage.ref(`1/${floor}.jpg`);
-  const url = await pathReference.getDownloadURL();
-
-  const xhr = new XMLHttpRequest();
-  xhr.responseType = "blob";
-  xhr.onload = (event) => {
-    var blob = xhr.response;
-  };
-  xhr.open("GET", url);
-  xhr.send();
-};
-
 export const getStorage = async () => {
   const storage = firebase.storage();
 
   return storage;
 };
+export const toDataURL = (url) => {
+  return fetch(url)
+    .then((response) => {
+      return response.blob();
+    })
+    .then((blob) => {
+      return URL.createObjectURL(blob);
+    });
+};
+
+const download = async (url, name) => {
+  const a = document.createElement("a");
+  a.href = await toDataURL(url);
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+};
+
+export const downloadGuideImageByFloor = async (floor) => {
+  const storage = firebase.storage();
+  const pathReference = storage.ref(`1/${floor}`);
+  const url = await pathReference.getDownloadURL();
+  await download(url, pathReference.name);
+};
 
 export const downloadAllGuidesImage = async () => {
   const storage = firebase.storage();
-  const storageRef = storage.ref();
-
-  const list = await storageRef.listAll();
-  list.items.forEach(async (imageRef) => {
-    const url = await imageRef.getDownloadURL();
-    const xhr = new XMLHttpRequest();
-    xhr.responseType = "blob";
-    xhr.onload = (event) => {
-      var blob = xhr.response;
-    };
-    xhr.open("GET", url);
-    xhr.send();
-  });
+  const allGuidesZipRef = storage.ref("1/롯데백화점 포항점 피난안내도 전체.zip");
+  const url = await allGuidesZipRef.getDownloadURL();
+  await download(url, allGuidesZipRef.name);
 };

@@ -9,6 +9,7 @@ import { RootState } from '../store';
 import Guide from './Guide';
 import Loading from './Loading';
 import styled from 'styled-components';
+import DownloadFloatButton from './DownloadFloatButton';
 
 const GuideList = () => {
     const dispatch = useDispatch();
@@ -34,20 +35,21 @@ const GuideList = () => {
         setGuidesInfo();
     }, [setGuidesInfo])
 
-    return <GuideListLayout>
+    return <>
+    <GuideListLayout>
         {(!guides || guides.length === 0) && <Loading /> }
         {guides && guides.length > 0 && guides.map((evacuationGuide, index) => {
-            return <Guide {...evacuationGuide} key={index}/>
+            return <Guide {...evacuationGuide} key={index} />
         })}
     </GuideListLayout>
+    <DownloadFloatButton />
+    </>
 }
 
 const GuideListLayout = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    height : 100%;
-    width: 100%;
 `
 
 export default GuideList;

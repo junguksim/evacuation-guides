@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import { setSelectedGuideImageSrc, setSelectedGuideName } from '../actions/GuideActions';
 import { getStorage } from '../firebase';
 import { RootState } from '../store';
+import DownloadFloatButton from './DownloadFloatButton';
+import Loading from './Loading';
 
 const GuideDetail = () => {
     const dispatch = useDispatch();
@@ -24,18 +26,28 @@ const GuideDetail = () => {
         getImageSrc();
     }, [getImageSrc, selectedGuideName, dispatch])
 
-    return <GuideDetailLayout>
-        <GuideEmergencyWrapper>
-            {selectedGuideImageSrc && <GuideDetailImage src={selectedGuideImageSrc} alt={``} ></GuideDetailImage>}
-            <EmergencyInformationImage src={process.env.PUBLIC_URL +`/emergency_information.png`} alt={``} ></EmergencyInformationImage>
-        </GuideEmergencyWrapper>
-        <SososimLayout>
-            <SososimImage src={process.env.PUBLIC_URL + `/extinguisher.png`} alt={``} />
-            <SososimImage src={process.env.PUBLIC_URL + `/fireplug.png`} alt={``} />
-            <SososimImage src={process.env.PUBLIC_URL + `/cpr.png`} alt={``} />
-            <h3>포항북부소방서와 롯데백화점 포항점은 함께 합니다.</h3>
-        </SososimLayout>
-    </GuideDetailLayout>
+    return <>
+        {!selectedGuideImageSrc && <Loading />}
+        {selectedGuideImageSrc &&
+            <>
+                <GuideDetailLayout>
+                <GuideEmergencyWrapper>
+                    <GuideDetailImage src={selectedGuideImageSrc} alt={``} ></GuideDetailImage>
+                    <EmergencyInformationImage src={process.env.PUBLIC_URL +`/emergency_information.png`} alt={``} ></EmergencyInformationImage>
+                </GuideEmergencyWrapper>
+                <SososimLayout>
+                    <SososimImage src={process.env.PUBLIC_URL + `/extinguisher.png`} alt={``} />
+                    <SososimImage src={process.env.PUBLIC_URL + `/fireplug.png`} alt={``} />
+                    <SososimImage src={process.env.PUBLIC_URL + `/cpr.png`} alt={``} />
+                    <h3>포항북부소방서와 롯데백화점 포항점은 함께 합니다.</h3>
+                </SososimLayout>
+                </GuideDetailLayout>
+            <DownloadFloatButton />
+            </>
+            
+        }
+        
+    </>
 }
 
 const GuideDetailLayout = styled.div`
