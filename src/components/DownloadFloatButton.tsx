@@ -1,53 +1,60 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { downloadAllGuidesImage, downloadGuideImageByFloor } from '../firebase';
+import React, { useCallback, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import styled from "styled-components";
+import { downloadAllGuidesImage, downloadGuideImageByFloor } from "../firebase";
+import { RootState } from "../store";
 
 const DownloadFloatButton = () => {
+  const [isList, setIsList] = useState<boolean>(false);
+  const { placeId, entireDownloadFileName } = useSelector((state: RootState) => state.guide);
 
-    const [isList, setIsList] = useState<boolean>(false);
+  useEffect(() => {
+    const locationSplit = window.location.href.split("/");
+    setIsList(locationSplit[locationSplit.length - 1] === "guides");
+  }, [placeId, entireDownloadFileName]);
 
-    useEffect(() => {
-        const locationSplit = window.location.href.split("/");
-        setIsList(locationSplit[locationSplit.length - 1] === "guides");
-    }, [])
+  const downloadButtonOnclick = useCallback(() => {
+    const locationSplit = window.location.href.split("/");
+    if (isList) {
+      downloadAllGuidesImage(placeId, entireDownloadFileName);
+    } else {
+      downloadGuideImageByFloor(placeId, locationSplit[locationSplit.length - 1]);
+    }
+  }, [placeId, isList, entireDownloadFileName]);
 
-    return <DownloadFloatButtonLayout>
-            <svg 
-                xmlns="http://www.w3.org/2000/svg"
-                width="30"
-                height="30"
-                viewBox="0 0 20 20" onClick={() => {
-                    const locationSplit = window.location.href.split("/");
-                    if (isList) {
-                        downloadAllGuidesImage();
-                    } else {
-                        downloadGuideImageByFloor(locationSplit[locationSplit.length - 1])
-                    }
-                }}>
-                <path d="M17 12v5H3v-5H1v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5z" />
-                <path d="M10 15l5-6h-4V1H9v8H5l5 6z" />
-            </svg>
-            <h3>다운로드</h3>
-        </DownloadFloatButtonLayout>
-}
+  return (
+    <DownloadFloatButtonLayout onClick={downloadButtonOnclick}>
+      <DownloadFloatButtonSvg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 20 20" color="#FFFFFF">
+        <path d="M17 12v5H3v-5H1v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5z" />
+        <path d="M10 15l5-6h-4V1H9v8H5l5 6z" />
+      </DownloadFloatButtonSvg>
+      <h3>다운로드</h3>
+    </DownloadFloatButtonLayout>
+  );
+};
 
 const DownloadFloatButtonLayout = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap : 10px;
-    position: fixed;
-    right : 10px;
-    bottom : 10px;
-    border: 1px solid black;
-    padding: 5px;
-    border-radius: 10px;
-    cursor: pointer;
-    background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  color: white;
+  border: 1px solid #273890;
+  padding: 5px;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: #273890;
 
-    :hover {
-        background-color: gray;
-    }
-`
+  :hover {
+    background-color: gray;
+  }
+`;
+
+const DownloadFloatButtonSvg = styled.svg`
+  fill: #ffffff;
+`;
 
 export default DownloadFloatButton;

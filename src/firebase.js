@@ -36,16 +36,16 @@ const download = async (url, name) => {
   document.body.removeChild(a);
 };
 
-export const downloadGuideImageByFloor = async (floor) => {
+export const downloadGuideImageByFloor = async (placeId, floor) => {
   const storage = firebase.storage();
-  const pathReference = storage.ref(`1/${floor}`);
+  const pathReference = storage.ref(`${placeId}/${floor}`);
   const url = await pathReference.getDownloadURL();
   await download(url, pathReference.name);
 };
 
-export const downloadAllGuidesImage = async () => {
+export const downloadAllGuidesImage = async (placeId, entireDownloadFileName) => {
   const storage = firebase.storage();
-  const allGuidesZipRef = storage.ref("1/롯데백화점 포항점 피난안내도 전체.zip");
+  const allGuidesZipRef = storage.ref(`${placeId}/${entireDownloadFileName}`);
   const url = await allGuidesZipRef.getDownloadURL();
   await download(url, allGuidesZipRef.name);
 };
