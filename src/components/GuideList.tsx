@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setEntireDownloadFileName, setGuides, setPlaceId } from "../actions/GuideActions";
+import { setEntireDownloadFileName, setGuides, setPlaceId, setPlaceName } from "../actions/GuideActions";
 import { getStorage } from "../firebase";
 import { GuideInfo } from "../reducers/guide";
 import { RootState } from "../store";
@@ -21,6 +21,13 @@ const GuideList = () => {
     const placeGuidesList = (await placeRef.listAll()).items;
     for (const guideRef of placeGuidesList) {
       if (guideRef.name.split(".")[1] === "zip") {
+        let placeName = "";
+        const list = guideRef.name.split(" ");
+        for (const name of list) {
+          if (name.search("피난안내도") >= 0) break;
+          placeName += `${name} `;
+        }
+        dispatch(setPlaceName(placeName));
         dispatch(setEntireDownloadFileName(guideRef.name));
         continue;
       }
@@ -56,7 +63,7 @@ const GuideList = () => {
             return <Guide {...evacuationGuide} key={index} />;
           })}
       </GuideListLayout>
-      {guides && <DownloadFloatButton />}
+      {guides && guides.length > 0 && <DownloadFloatButton />}
     </>
   );
 };

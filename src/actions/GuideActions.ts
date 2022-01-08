@@ -1,11 +1,18 @@
 import { Dispatch } from "redux";
 import { GuideInfo } from "../reducers/guide";
-import { ReduxAction, SET_GUIDES, SET_SELECTED_GUIDE_NAME, SET_SELECTED_GUIDE_IMAGE_SRC, SET_PLACE_ID, SET_ENTIRE_DOWNLOAD_FILE_NAME } from "./actionTypes";
+import { ReduxAction, SET_GUIDES, SET_SELECTED_GUIDE_NAME, SET_SELECTED_GUIDE_IMAGE_SRC, SET_PLACE_ID, SET_ENTIRE_DOWNLOAD_FILE_NAME, SET_PLACE_NAME } from "./actionTypes";
 
 export const setPlaceId = (placeId: string) => (dispatch: Dispatch<ReduxAction>) => {
   dispatch({
     type: SET_PLACE_ID,
     payload: placeId,
+  });
+};
+
+export const setPlaceName = (placeName: string) => (dispatch: Dispatch<ReduxAction>) => {
+  dispatch({
+    type: SET_PLACE_NAME,
+    payload: placeName,
   });
 };
 
