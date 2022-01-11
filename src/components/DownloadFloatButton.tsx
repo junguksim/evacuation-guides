@@ -20,13 +20,10 @@ const DownloadFloatButton = () => {
     if (placeId && entireDownloadFileName) {
       if (isList) {
         const url = await getUrl(placeId, entireDownloadFileName);
-        console.log(url);
         downloadFile(url, entireDownloadFileName);
       } else {
         const fileName = query.get("fileName") as string;
         const url = await getUrl(placeId, fileName);
-        console.log(url);
-
         downloadFile(url, fileName);
       }
     }
