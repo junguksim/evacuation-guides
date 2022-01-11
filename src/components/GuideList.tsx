@@ -1,46 +1,29 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setEntireDownloadFileName, setGuides, setPlaceId, setPlaceName } from "../actions/GuideActions";
-import { getStorage } from "../firebase";
-import { GuideInfo } from "../reducers/guide";
 import { RootState } from "../store";
 import Guide from "./Guide";
 import Loading from "./Loading";
 import styled from "styled-components";
 import DownloadFloatButton from "./DownloadFloatButton";
+import { getAllRef } from "../utils";
+import useQuery from "../hooks/useQuery";
 
 const GuideList = () => {
   const dispatch = useDispatch();
-  const { guides } = useSelector((state: RootState) => state.guide);
-  const [placeId, setPlaceIdState] = useState<string>("");
+  const query = useQuery();
+  const { guides, placeId } = useSelector((state: RootState) => state.guide);
 
   const setGuidesInfo = useCallback(async () => {
-    const guideInfos: GuideInfo[] = [];
-    const storage = await getStorage();
-    const placeRef = storage.ref(placeId);
-    const placeGuidesList = (await placeRef.listAll()).items;
-    for (const guideRef of placeGuidesList) {
-      if (guideRef.name.split(".")[1] === "zip") {
-        let placeName = "";
-        const list = guideRef.name.split(" ");
-        for (const name of list) {
-          if (name.search("피난안내도") >= 0) break;
-          placeName += `${name} `;
-        }
-        dispatch(setPlaceName(placeName));
-        dispatch(setEntireDownloadFileName(guideRef.name));
-        continue;
-      }
-      if (guideRef.name.split(".")[1] === "jpg" || guideRef.name.split(".")[1] === "png" || guideRef.name.split(".")[1] === "jpeg") {
-        const imageSrc = await guideRef.getDownloadURL();
-        guideInfos.push({
-          imageSrc,
-          imageAlt: "",
-          name: guideRef.name,
-        });
+    if (placeId) {
+      try {
+        const { entireDownloadFileName, guideInfos } = await getAllRef(placeId);
+        dispatch(setEntireDownloadFileName(entireDownloadFileName));
+        dispatch(setGuides(guideInfos));
+      } catch (e) {
+        console.error(e);
       }
     }
-    dispatch(setGuides(guideInfos));
   }, [dispatch, placeId]);
 
   useEffect(() => {
@@ -48,10 +31,11 @@ const GuideList = () => {
   }, [setGuidesInfo]);
 
   useEffect(() => {
-    const locationSplit = window.location.href.split("/guides");
-    setPlaceIdState(locationSplit[0].split("/evacuation-guides/")[1]);
+    const placeId = query.get("placeId") as string;
     dispatch(setPlaceId(placeId));
-  }, [dispatch, setPlaceIdState, placeId]);
+    const placeName = query.get("placeName") as string;
+    dispatch(setPlaceName(placeName));
+  }, [dispatch, query]);
 
   return (
     <>

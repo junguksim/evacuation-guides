@@ -2,29 +2,33 @@ import React, { useEffect } from "react";
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { setSelectedGuideImageSrc, setSelectedGuideName } from "../actions/GuideActions";
-import { getStorage } from "../firebase";
+import { setPlaceId, setPlaceName, setSelectedGuideImageSrc } from "../actions/GuideActions";
+import { getUrl } from "../utils";
 import { RootState } from "../store";
 import DownloadFloatButton from "./DownloadFloatButton";
 import Loading from "./Loading";
+import useQuery from "../hooks/useQuery";
 
 const GuideDetail = () => {
   const dispatch = useDispatch();
-  const { selectedGuideName, selectedGuideImageSrc, placeName } = useSelector((state: RootState) => state.guide);
+  const query = useQuery();
+  const { selectedGuideImageSrc, placeName } = useSelector((state: RootState) => state.guide);
 
   const getImageSrc = useCallback(async () => {
-    const storage = await getStorage();
-    if (selectedGuideName) {
-      const imageSrc = await storage.ref(`1/${selectedGuideName}`).getDownloadURL();
+    if (!selectedGuideImageSrc) {
+      const placeId = query.get("placeId") as string;
+      const fileName = query.get("fileName") as string;
+      const placeName = query.get("placeName") as string;
+      const imageSrc = await getUrl(placeId, fileName);
+      dispatch(setPlaceId(placeId));
+      dispatch(setPlaceName(placeName));
       dispatch(setSelectedGuideImageSrc(imageSrc));
     }
-  }, [dispatch, selectedGuideName]);
+  }, [dispatch, selectedGuideImageSrc, query]);
 
   useEffect(() => {
-    const locationSplit = window.location.href.split("/");
-    dispatch(setSelectedGuideName(locationSplit[locationSplit.length - 1]));
     getImageSrc();
-  }, [getImageSrc, selectedGuideName, dispatch]);
+  }, [getImageSrc]);
 
   return (
     <>
@@ -55,7 +59,6 @@ const GuideDetailLayout = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 100%;
 
   @media only screen and (max-width: 600px) {
     display: flex;
