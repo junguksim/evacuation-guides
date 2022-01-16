@@ -1,24 +1,24 @@
 import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setEntireDownloadFileName, setGuides, setPlaceId, setPlaceName } from "../actions/GuideActions";
+import { setEntireDownloadUrl, setGuides, setPlaceId, setPlaceName } from "../actions/GuideActions";
 import { RootState } from "../store";
 import Guide from "./Guide";
 import Loading from "./Loading";
 import styled from "styled-components";
 import DownloadFloatButton from "./DownloadFloatButton";
-import { getAllRef } from "../utils";
 import useQuery from "../hooks/useQuery";
+import { allGuideInfo } from "../allGuideInfo";
 
 const GuideList = () => {
   const dispatch = useDispatch();
   const query = useQuery();
-  const { guides, placeId } = useSelector((state: RootState) => state.guide);
+  const { guides, placeId, entireDownloadUrl, placeName } = useSelector((state: RootState) => state.guide);
 
   const setGuidesInfo = useCallback(async () => {
     if (placeId) {
       try {
-        const { entireDownloadFileName, guideInfos } = await getAllRef(placeId);
-        dispatch(setEntireDownloadFileName(entireDownloadFileName));
+        const { entireDownloadUrl, guideInfos } = allGuideInfo[parseInt(placeId) - 1];
+        dispatch(setEntireDownloadUrl(entireDownloadUrl));
         dispatch(setGuides(guideInfos));
       } catch (e) {
         console.error(e);
@@ -47,7 +47,7 @@ const GuideList = () => {
             return <Guide {...evacuationGuide} key={index} />;
           })}
       </GuideListLayout>
-      {guides && guides.length > 0 && <DownloadFloatButton />}
+      {guides && guides.length > 0 && <DownloadFloatButton url={entireDownloadUrl as string} fileName={placeName as string} />}
     </>
   );
 };

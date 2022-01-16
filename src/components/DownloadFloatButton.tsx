@@ -1,33 +1,18 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { downloadFile, getUrl } from "../utils";
-import { RootState } from "../store";
+import { downloadFile } from "../utils";
 import { useLocation } from "react-router-dom";
-import useQuery from "../hooks/useQuery";
 
-const DownloadFloatButton = () => {
+const DownloadFloatButton = ({ url, fileName }: { url: string; fileName: string }) => {
   const [isList, setIsList] = useState<boolean>(false);
   const location = useLocation();
-  const query = useQuery();
-  const { placeId, entireDownloadFileName } = useSelector((state: RootState) => state.guide);
-
   useEffect(() => {
     setIsList(location.pathname === "/guides");
   }, [location]);
 
   const downloadButtonOnclick = useCallback(async () => {
-    if (placeId && entireDownloadFileName) {
-      if (isList) {
-        const url = await getUrl(placeId, entireDownloadFileName);
-        downloadFile(url, entireDownloadFileName);
-      } else {
-        const fileName = query.get("fileName") as string;
-        const url = await getUrl(placeId, fileName);
-        downloadFile(url, fileName);
-      }
-    }
-  }, [placeId, isList, entireDownloadFileName, query]);
+    downloadFile(url, fileName);
+  }, [url, fileName]);
 
   return (
     <DownloadFloatButtonLayout onClick={downloadButtonOnclick}>

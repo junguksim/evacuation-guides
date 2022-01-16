@@ -1,7 +1,12 @@
-import axios from "axios";
-
 export const toDataURL = (url: string) => {
-  return fetch(url)
+  return fetch(url, {
+    method: "GET",
+    mode: "cors",
+    cache: "no-cache",
+    headers: {
+      Origin: window.location.origin,
+    },
+  })
     .then((response) => {
       return response.blob();
     })
@@ -11,20 +16,14 @@ export const toDataURL = (url: string) => {
 };
 
 export const downloadFile = async (url: string, name: string) => {
-  const a = document.createElement("a");
-  a.href = await toDataURL(url);
-  a.download = name;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-};
-
-export const getAllRef = async (placeId: string): Promise<{ placeName: string; entireDownloadFileName: string; guideInfos: { imageSrc: string; imageAlt: string; name: string }[] }> => {
-  const { data } = await axios.get(`https://oxfwijj0qg.execute-api.ap-northeast-2.amazonaws.com/prod/v1/guides?placeId=${placeId}`);
-  return data.body;
-};
-
-export const getUrl = async (placeId: string, fileName: string): Promise<string> => {
-  const { data } = await axios.get(`https://oxfwijj0qg.execute-api.ap-northeast-2.amazonaws.com/prod/v1/guides?placeId=${placeId}&fileName=${fileName}`);
-  return data.body;
+  try {
+    const a = document.createElement("a");
+    a.href = await toDataURL(url);
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  } catch (e) {
+    alert("다운로드 중 문제가 발생했습니다.");
+  }
 };

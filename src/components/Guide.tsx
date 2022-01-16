@@ -16,7 +16,7 @@ const Guide = ({ imageSrc, imageAlt, name }: GuideInfo) => {
       onClick={() => {
         dispatch(setSelectedGuideName(name));
         dispatch(setSelectedGuideImageSrc(imageSrc));
-        navigate(`./detail?placeId=${placeId}&fileName=${name}&placeName=${placeName}`);
+        navigate(`/detail?placeId=${placeId}&fileName=${name}&placeName=${placeName}`);
       }}
     >
       <GuideThumbnail alt={imageAlt} src={imageSrc}></GuideThumbnail>

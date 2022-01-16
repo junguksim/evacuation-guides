@@ -2,26 +2,29 @@ import React, { useEffect } from "react";
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { setPlaceId, setPlaceName, setSelectedGuideImageSrc } from "../actions/GuideActions";
-import { getUrl } from "../utils";
+import { setPlaceId, setSelectedGuideImageSrc } from "../actions/GuideActions";
 import { RootState } from "../store";
 import DownloadFloatButton from "./DownloadFloatButton";
 import Loading from "./Loading";
 import useQuery from "../hooks/useQuery";
+import { allGuideInfo } from "../allGuideInfo";
 
 const GuideDetail = () => {
   const dispatch = useDispatch();
   const query = useQuery();
-  const { selectedGuideImageSrc, placeName } = useSelector((state: RootState) => state.guide);
+  const { selectedGuideImageSrc } = useSelector((state: RootState) => state.guide);
 
   const getImageSrc = useCallback(async () => {
     if (!selectedGuideImageSrc) {
       const placeId = query.get("placeId") as string;
-      const fileName = query.get("fileName") as string;
-      const placeName = query.get("placeName") as string;
-      const imageSrc = await getUrl(placeId, fileName);
+      const floorName = query.get("fileName") as string;
+      const { guideInfos } = allGuideInfo[parseInt(placeId) - 1];
+      const floorInfo = guideInfos.filter((guideInfo) => {
+        console.log(floorName, guideInfo.name);
+        return guideInfo.name === floorName;
+      });
+      const { imageSrc } = floorInfo[0];
       dispatch(setPlaceId(placeId));
-      dispatch(setPlaceName(placeName));
       dispatch(setSelectedGuideImageSrc(imageSrc));
     }
   }, [dispatch, selectedGuideImageSrc, query]);
@@ -44,10 +47,9 @@ const GuideDetail = () => {
               <SososimImage src={process.env.PUBLIC_URL + `/extinguisher.png`} alt={``} />
               <SososimImage src={process.env.PUBLIC_URL + `/fireplug.png`} alt={``} />
               <SososimImage src={process.env.PUBLIC_URL + `/cpr.png`} alt={``} />
-              <h3>포항북부소방서와 {placeName}은/는 함께 합니다.</h3>
             </SososimLayout>
           </GuideDetailLayout>
-          <DownloadFloatButton />
+          <DownloadFloatButton url={selectedGuideImageSrc} fileName={query.get("fileName") as string} />
         </>
       )}
     </>

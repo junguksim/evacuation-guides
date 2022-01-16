@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import { GuideInfo } from "../reducers/guide";
-import { ReduxAction, SET_GUIDES, SET_SELECTED_GUIDE_NAME, SET_SELECTED_GUIDE_IMAGE_SRC, SET_PLACE_ID, SET_ENTIRE_DOWNLOAD_FILE_NAME, SET_PLACE_NAME } from "./actionTypes";
+import { ReduxAction, SET_GUIDES, SET_SELECTED_GUIDE_NAME, SET_SELECTED_GUIDE_IMAGE_SRC, SET_PLACE_ID, SET_PLACE_NAME, SET_ENTIRE_DOWNLOAD_URL } from "./actionTypes";
 
 export const setPlaceId = (placeId: string) => (dispatch: Dispatch<ReduxAction>) => {
   dispatch({
@@ -37,9 +37,9 @@ export const setGuides = (guides: GuideInfo[]) => (dispatch: Dispatch<ReduxActio
   });
 };
 
-export const setEntireDownloadFileName = (entireDownloadFileName: string) => (dispatch: Dispatch<ReduxAction>) => {
+export const setEntireDownloadUrl = (entireDownloadUrl: string) => (dispatch: Dispatch<ReduxAction>) => {
   dispatch({
-    type: SET_ENTIRE_DOWNLOAD_FILE_NAME,
-    payload: entireDownloadFileName,
+    type: SET_ENTIRE_DOWNLOAD_URL,
+    payload: entireDownloadUrl,
   });
 };
