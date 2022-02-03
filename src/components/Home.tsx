@@ -10,6 +10,10 @@ const Home = () => {
       <Link to={"guides?placeId=2&placeName=북포항 CGV"}>북포항 CGV 피난안내도</Link>
       <br />
       <Link to={"guides?placeId=3&placeName=포은중앙도서관"}>포은중앙도서관 피난안내도</Link>
+      <br />
+      <Link to={"guides?placeId=4&placeName=롯데시네마 포항"}>롯데시네마 포항 피난안내도</Link>
+      <br />
+      <Link to={"guides?placeId=5&placeName=라한호텔"}>라한호텔 피난안내도</Link>
     </>
   );
 };

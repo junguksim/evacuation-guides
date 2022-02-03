@@ -2,7 +2,6 @@ import { ReduxAction, SET_GUIDES, SET_SELECTED_GUIDE_NAME, SET_SELECTED_GUIDE_IM
 
 export interface GuideInfo {
   imageSrc: string;
-  imageAlt: string;
   name: string;
 }
 export interface GuideState {

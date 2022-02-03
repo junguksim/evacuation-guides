@@ -6,7 +6,7 @@ import { setSelectedGuideName, setSelectedGuideImageSrc } from "../actions/Guide
 import { GuideInfo } from "../reducers/guide";
 import { RootState } from "../store";
 
-const Guide = ({ imageSrc, imageAlt, name }: GuideInfo) => {
+const Guide = ({ imageSrc, name }: GuideInfo) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { placeId, placeName } = useSelector((state: RootState) => state.guide);
@@ -19,7 +19,7 @@ const Guide = ({ imageSrc, imageAlt, name }: GuideInfo) => {
         navigate(`/detail?placeId=${placeId}&fileName=${name}&placeName=${placeName}`);
       }}
     >
-      <GuideThumbnail alt={imageAlt} src={imageSrc}></GuideThumbnail>
+      <GuideThumbnail alt={name} src={imageSrc}></GuideThumbnail>
       <TouchScreenImage alt={""} src={process.env.PUBLIC_URL + "/touch_screen.png"} />
     </GuideLayout>
   );
